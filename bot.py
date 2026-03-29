@@ -10,33 +10,25 @@ from admin import admin_router
 from reminders import start_reminders
 
 logging.basicConfig(level=logging.INFO)
-
 async def main():
-    print("=" * 50)
-    print(" БОТ ДЛЯ ПАРИКМАХЕРСКОЙ ЗАПУСКАЕТСЯ...")
-    print("=" * 50)
-
-    init_database()
-    print(" База данных: OK")
+    print("=" * 60)
+    print("МИНИМАЛЬНЫЙ ТЕСТОВЫЙ БОТ")
+    print("=" * 60)
 
     bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher()
 
-    dp.include_router(router)
-    dp.include_router(admin_router)
-
-    # Запуск напоминаний в фоне
-    asyncio.create_task(start_reminders(bot))
-
-    print(" Напоминания запущены")
-    print("=" * 50)
-    print(" БОТ ЗАПУЩЕН В РЕЖИМЕ POLLING")
-    print(" Ожидаем сообщения от пользователей...")
+    print("✅ Бот и Dispatcher созданы")
+    print("🚀 Бот запущен в режиме polling")
+    print("Напиши сообщение боту в Telegram...")
 
     try:
         await dp.start_polling(bot, skip_updates=True)
     except Exception as e:
-        print(f"❌ Ошибка при запуске: {e}")
+        print(f"❌ Ошибка: {e}")
     finally:
         await bot.session.close()
         print("🛑 Бот остановлен")
+
+if name == "__main__":
+    asyncio.run(main())
