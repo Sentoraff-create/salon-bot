@@ -12,9 +12,9 @@ from reminders import start_reminders
 logging.basicConfig(level=logging.INFO)
 
 async def main():
-    print("=" * 45)
+    print("=" * 50)
     print(" БОТ ДЛЯ ПАРИКМАХЕРСКОЙ ЗАПУСКАЕТСЯ...")
-    print("=" * 45)
+    print("=" * 50)
 
     init_database()
     print(" База данных: OK")
@@ -24,14 +24,19 @@ async def main():
 
     dp.include_router(router)
     dp.include_router(admin_router)
-    task = asyncio.create_task(start_reminders(bot))
 
-    print(" Напоминания: OK")
-    print("=" * 45)
-    print(" БОТ РАБОТАЕТ! ")
+    # Запуск напоминаний в фоне
+    asyncio.create_task(start_reminders(bot))
+
+    print(" Напоминания запущены")
+    print("=" * 50)
+    print(" БОТ ЗАПУЩЕН В РЕЖИМЕ POLLING")
+    print(" Ожидаем сообщения от пользователей...")
 
     try:
-        await dp.start_polling(bot)
+        await dp.start_polling(bot, skip_updates=True)
+    except Exception as e:
+        print(f"❌ Ошибка при запуске: {e}")
     finally:
         await bot.session.close()
-        print(" Бот остановлен")
+        print("🛑 Бот остановлен")
