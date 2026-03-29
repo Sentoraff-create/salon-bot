@@ -25,17 +25,19 @@ async def main():
     print("  Напоминания: OK")
     print("=" * 45)
     print("  БОТ РАБОТАЕТ! Ctrl+C для остановки")
-    print("=" * 45)
-    try:
-        await dp.start_polling(bot)
-    finally:
-        task.cancel()
-        await bot.session.close()
+    # === Webhook вместо polling ===
+    webhook_url = "https://salon-bot-production-7131.up.railway.app/webhook"
+    
+    await bot.set_webhook(webhook_url)
+    print(f"✅ Webhook установлен: {webhook_url}")
+    print("🤖 Бот запущен и готов принимать сообщения...")
 
-if __name__ == "__main__":
+    # Держим бот запущенным
     try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("Бот остановлен.")
-    except Exception as e:
-        print(f"Ошибка: {e}")
+        await asyncio.Event().wait()
+    except asyncio.CancelledError:
+        print("⛔ Бот остановлен")
+    finally:
+        await bot.delete_webhook()
+        await bot.session.close()
+        print("🛑 Бот завершил работу")
