@@ -29,6 +29,5 @@ async def main():
     finally:
         await bot.session.close()
         print("🛑 Бот остановлен")
-
-if name == "__main__":
+        if name == "__main__":
     asyncio.run(main())
