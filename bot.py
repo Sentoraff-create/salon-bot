@@ -13,23 +13,25 @@ logging.basicConfig(level=logging.INFO)
 
 async def main():
     print("=" * 45)
-    print("  БОТ ДЛЯ ПАРИКМАХЕРСКОЙ ЗАПУСКАЕТСЯ...")
+    print(" БОТ ДЛЯ ПАРИКМАХЕРСКОЙ ЗАПУСКАЕТСЯ...")
     print("=" * 45)
+
     init_database()
-    print("  База данных: OK")
+    print(" База данных: OK")
+
     bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher()
+
     dp.include_router(router)
     dp.include_router(admin_router)
     task = asyncio.create_task(start_reminders(bot))
-    print("  Напоминания: OK")
+
+    print(" Напоминания: OK")
     print("=" * 45)
-    print("  БОТ РАБОТАЕТ! Ctrl+C для остановки")
-print("🤖 Бот запущен в режиме Polling (медленнее, но стабильно)")
-    print("Ctrl+C для остановки в локальной версии")
+    print(" БОТ РАБОТАЕТ! ")
 
     try:
         await dp.start_polling(bot)
     finally:
         await bot.session.close()
-        print("🛑 Бот остановлен")
+        print(" Бот остановлен")
